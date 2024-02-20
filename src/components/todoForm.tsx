@@ -13,7 +13,7 @@ function SubmitButton() {
   )
 }
 
-export default function TODOForm({action}) {
+export default function TODOForm({action}: React.FormHTMLAttributes<HTMLFormElement>) {
   return (
     <form action={action}>
       <div className="flex flex-col">
@@ -29,7 +29,7 @@ export default function TODOForm({action}) {
 
         <label htmlFor="description">Description</label>
         <textarea
-          rows="3"
+          rows={3}
           id="description"
           name="description"
           className="text-black mb-2 border-2 rounded-lg px-2"

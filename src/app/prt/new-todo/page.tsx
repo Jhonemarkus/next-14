@@ -3,7 +3,6 @@
 import { revalidatePath } from "next/cache"
 import { redirect } from "next/dist/server/api-utils"
 import { useFormState, useFormStatus } from "react-dom"
-import { createTODO } from "../actions"
 import { useMemo } from "react"
 import useTODOList from "@/hooks/useTODOList"
 import { useRouter } from "next/navigation"
@@ -12,7 +11,7 @@ import TODOForm from "@/components/todoForm"
 
 export default function NewTODO() {
   const router = useRouter()
-  const {isLoading, update, data, key } = useTODOList()
+  const {isLoading, update, data } = useTODOList()
   const [formState, formAction]  = useFormState(async (prevState: any, formData: FormData) => {
     const todo = {
       id: new Date().getTime(),

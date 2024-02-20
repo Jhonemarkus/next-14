@@ -3,12 +3,18 @@
 import TODOForm from "@/components/todoForm"
 import { useRouter } from "next/navigation"
 
-export default function EditTODO({params}) {
+type IEditTODOParams = {
+  params: {
+    id: string
+  }
+}
+
+export default function EditTODO({params}: IEditTODOParams) {
   const {id} = params
   
   return (
     <>
-      <TODOForm />
+      <TODOForm action={"#"}/>
     </>
   )
 }
