@@ -18,9 +18,9 @@ function SubmitButton({text}: ISubmitButtonProps) {
   )
 }
 
-export type ITODOFormProps = React.FormHTMLAttributes<HTMLFormElement & {
-  todo: ITodo
-}>
+export type ITODOFormProps = React.FormHTMLAttributes<HTMLFormElement> & {
+  todo?: ITodo
+}
 
 export default function TODOForm({ action, todo }: ITODOFormProps) {
   return (

@@ -5,6 +5,7 @@ import useTODOList from "@/hooks/useTODOList"
 import { useRouter } from "next/navigation"
 import { useMemo } from "react"
 import { useFormState } from "react-dom"
+import { ITodo } from "../types/iTodo"
 
 type IEditTODOParams = {
   params: {
@@ -21,10 +22,10 @@ export default function EditTODO({params}: IEditTODOParams) {
   }, [data, id])
   
   const [formState, formAction] = useFormState(async (prevState: any, formData: FormData) => {
-    const todo = {
-      id: id,
-      title: formData.get('title'),
-      description: formData.get('description')
+    const todo: ITodo = {
+      id: `${id}`,
+      title: `${formData.get('title')}`,
+      description: `${formData.get('description')}`
     }
     const todoIndex = data.findIndex(el => el.id === id)
     const todoList = [...data]
