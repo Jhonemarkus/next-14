@@ -14,7 +14,7 @@ export default function NewTODO() {
   const {isLoading, update, data } = useTODOList()
   const [formState, formAction]  = useFormState(async (prevState: any, formData: FormData) => {
     const todo = {
-      id: new Date().getTime(),
+      id: `${new Date().getTime()}`,
       title: formData.get('title'),
       description: formData.get('description')
     }

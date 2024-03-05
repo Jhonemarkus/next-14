@@ -1,19 +1,28 @@
 import { useFormStatus } from "react-dom"
 import Button from "./button"
+import { ITodo } from "@/app/prt/types/iTodo"
 
-function SubmitButton() {
+type ISubmitButtonProps = {
+  text?: string
+}
+
+function SubmitButton({text}: ISubmitButtonProps) {
   const { pending } = useFormStatus()
   return (
     <Button
       type="submit"
       aria-disabled={pending}
     >
-      Add
+      {text || 'Submit'}
     </Button>
   )
 }
 
-export default function TODOForm({action}: React.FormHTMLAttributes<HTMLFormElement>) {
+export type ITODOFormProps = React.FormHTMLAttributes<HTMLFormElement & {
+  todo: ITodo
+}>
+
+export default function TODOForm({ action, todo }: ITODOFormProps) {
   return (
     <form action={action}>
       <div className="flex flex-col">
@@ -25,6 +34,7 @@ export default function TODOForm({action}: React.FormHTMLAttributes<HTMLFormElem
           required
           placeholder="New TODO"
           className="text-black mb-2 border-2 rounded-lg px-2"
+          defaultValue={todo?.title}
         />
 
         <label htmlFor="description">Description</label>
@@ -33,9 +43,9 @@ export default function TODOForm({action}: React.FormHTMLAttributes<HTMLFormElem
           id="description"
           name="description"
           className="text-black mb-2 border-2 rounded-lg px-2"
+          defaultValue={todo?.description}
         />
-
-        <SubmitButton />
+        <SubmitButton text={todo == null ? 'Add' : 'Edit'} />
       </div>
     </form>
   )
