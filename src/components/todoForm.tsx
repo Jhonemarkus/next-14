@@ -1,6 +1,7 @@
 import { useFormStatus } from "react-dom"
 import Button from "./button"
-import { ITodo } from "@/app/prt/types/iTodo"
+import { ITodo } from "@/types/iTodo"
+import { iTodoGroup } from "@/types/iTodoGroup"
 
 type ISubmitButtonProps = {
   text?: string
@@ -19,10 +20,11 @@ function SubmitButton({text}: ISubmitButtonProps) {
 }
 
 export type ITODOFormProps = React.FormHTMLAttributes<HTMLFormElement> & {
+  groupList: iTodoGroup[]
   todo?: ITodo
 }
 
-export default function TODOForm({ action, todo }: ITODOFormProps) {
+export default function TODOForm({ action, groupList, todo }: ITODOFormProps) {
   return (
     <form action={action}>
       <div className="flex flex-col">
@@ -36,6 +38,19 @@ export default function TODOForm({ action, todo }: ITODOFormProps) {
           className="text-black mb-2 border-2 rounded-lg px-2"
           defaultValue={todo?.title}
         />
+
+        <label htmlFor="group">Group</label>
+        <select
+          id="group"
+          name="groupId"
+          required
+          className="text-black mb-2 border-2 rounded-lg px-2"
+          defaultValue={todo?.groupId}
+        >
+          {groupList.map((group) => (
+            <option key={group.id} value={group.id} >{group.name}</option>
+          ))}
+        </select>
 
         <label htmlFor="description">Description</label>
         <textarea
