@@ -7,6 +7,7 @@ import { useMemo } from "react"
 import { useFormState } from "react-dom"
 import { ITodo } from "../../../types/iTodo"
 import { iTodoGroup } from "@/types/iTodoGroup"
+import { StoredDataV1 } from "@/types/storedDataV1"
 
 type IEditTODOParams = {
   params: {
@@ -16,15 +17,20 @@ type IEditTODOParams = {
 
 export default function EditTODO({params}: IEditTODOParams) {
   const router = useRouter()
-  const {id} = params
+  const {groupId, todoId} = params
   const {data, isLoading, update, groupList} = useTODOList()
   const todo = useMemo(() => {
-    return (data || []).find(el => el.id === id)
-  }, [data, id])
+    if (data == null) {
+      return null
+    }
+    const group = data.groups[groupId]
+    const todo = group.todos[todoId]
+    return todo
+  }, [data, groupId, todoId])
   
   const [formState, formAction] = useFormState(async (prevState: any, formData: FormData) => {
     const todo: ITodo = {
-      id: `${id}`,
+      id: `${todoId}`,
       title: `${formData.get('title')}`,
       description: `${formData.get('description')}`,
       groupId: `${formData.get('groupId')}`,
@@ -35,10 +41,14 @@ export default function EditTODO({params}: IEditTODOParams) {
       ...group.todos,
       [todo.id]: todo
     }
-    const todoIndex = data.findIndex(el => el.id === id)
-    const todoList = [...data]
-    todoList[todoIndex] = todo
-    update(todoList)
+    const newData: StoredDataV1 = {
+      version: data?.version,
+      groups: {
+        ...data.groups,
+        [groupId]: group
+      }
+    }
+    update(newData)
     router.push('/prt')
   }, { todo })
 

@@ -64,14 +64,14 @@ export default function PRTIndex() {
   },[data,update])
 
   const edit = useCallback((todo: ITodo) => {
-    router.push(`/prt/${todo.id}`)
+    router.push(`/prt/${todo.groupId}/${todo.id}`)
   },[router])
 
   const renderTodoList = useCallback((list: ITodo[]) => {
     return (
       <>
         {list.map((todo: ITodo) => (
-          <div key={todo.title} className="border border-black rounded-lg p-2 mb-2 flex flex-row bg-gray-200">
+          <div key={todo.title} className="border border-black rounded-lg p-2 mb-2 flex flex-row bg-gray-200 dark:border-white dark:bg-gray-800">
             <span
               className="grow flex flex-col cursor-pointer"
               onClick={() => edit(todo)}

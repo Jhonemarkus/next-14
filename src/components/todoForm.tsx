@@ -60,6 +60,8 @@ export default function TODOForm({ action, groupList, todo }: ITODOFormProps) {
           className="text-black mb-2 border-2 rounded-lg px-2"
           defaultValue={todo?.description}
         />
+
+        <input type="hidden" name="sequence" defaultValue={todo?.sequence} />
         <SubmitButton text={todo == null ? 'Add' : 'Edit'} />
       </div>
     </form>
