@@ -11,7 +11,7 @@ import { useFormState } from "react-dom";
 export default function NewGroupPage() {
   const router = useRouter()
   const {data, isLoading, update} = useTODOList()
-  const [formState, formAction] = useFormState((prevState: any, formData: FormData) => {
+  const [formState, formAction] = useFormState(async (prevState: any, formData: FormData) => {
     const group:iTodoGroup = {
       id: `${new Date().getTime()}`,
       name: `${formData.get('name')}`,
