@@ -1,9 +1,9 @@
-import { iTodoGroup } from "@/types/iTodoGroup"
+import { ITodoGroup } from "@/types/iTodoGroup"
 import { useFormStatus } from "react-dom"
 import Button from "./button"
 
 export type iGroupFormProps = React.FormHTMLAttributes<HTMLFormElement> & {
-  group?: iTodoGroup
+  group?: ITodoGroup
 }
 
 export default function GroupForm({ action, group }: iGroupFormProps) {

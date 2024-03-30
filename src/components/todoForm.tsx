@@ -1,7 +1,7 @@
 import { useFormStatus } from "react-dom"
 import Button from "./button"
 import { ITodo } from "@/types/iTodo"
-import { iTodoGroup } from "@/types/iTodoGroup"
+import { ITodoGroup } from "@/types/iTodoGroup"
 
 type ISubmitButtonProps = {
   text?: string
@@ -20,7 +20,7 @@ function SubmitButton({text}: ISubmitButtonProps) {
 }
 
 export type ITODOFormProps = React.FormHTMLAttributes<HTMLFormElement> & {
-  groupList: iTodoGroup[]
+  groupList: ITodoGroup[]
   todo?: ITodo
 }
 

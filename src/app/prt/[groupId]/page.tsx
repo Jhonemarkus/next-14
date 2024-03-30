@@ -3,13 +3,19 @@
 import Button from "@/components/button";
 import GroupForm from "@/components/groupForm";
 import useTODOList from "@/hooks/useTODOList";
-import { iTodoGroup } from "@/types/iTodoGroup";
+import { ITodoGroup } from "@/types/iTodoGroup";
 import { StoredDataV1 } from "@/types/storedDataV1";
 import { useRouter } from "next/navigation";
 import { useCallback, useMemo } from "react";
 import { useFormState } from "react-dom";
 
-export default function EditGroupPage({ params }) {
+type IEditGroupParams = {
+  params: {
+    groupId: string
+  }
+}
+
+export default function EditGroupPage({ params }: IEditGroupParams) {
   const { groupId } = params
   const router = useRouter()
   const {data, isLoading, update} = useTODOList()
@@ -18,10 +24,13 @@ export default function EditGroupPage({ params }) {
   }, [data, groupId])
 
   const [formState, formAction] = useFormState(async (prevState: any, formData: FormData) => {
-    const newGroup = {...group}
+    if (data == null || group == null) {
+      return
+    }
+    const newGroup: ITodoGroup = {...group}
     newGroup.name = `${formData.get('name')}`
     const newData:StoredDataV1 = {
-      version: data?.version,
+      version: data.version,
       groups: {
         ...data.groups,
         [group.id]: newGroup
@@ -32,6 +41,9 @@ export default function EditGroupPage({ params }) {
   }, group)
 
   const deleteGroup = useCallback(() => {
+    if (data == null) {
+      return
+    }
     const newData: StoredDataV1 = {...data}
     delete newData.groups[groupId]
     update(newData)

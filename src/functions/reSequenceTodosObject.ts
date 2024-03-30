@@ -1,9 +1,8 @@
 import { ITodo } from "@/types/iTodo";
-import { iTodoGroup } from "@/types/iTodoGroup";
+import { ITodoGroup } from "@/types/iTodoGroup";
 
-
-export default function reSequenceTodosObject(todos, sequenceToRemove: number) {
-  const newTodos = Object.values(todos).reduce((agg: object, el: ITodo) => {
+export default function reSequenceTodosObject(todos: ITodoGroup["todos"], sequenceToRemove: number): ITodoGroup["todos"] {
+  const newTodos = Object.values(todos).reduce<ITodoGroup["todos"]>((agg, el) => {
     if (el.sequence == sequenceToRemove) {
       return agg
     }

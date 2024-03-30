@@ -1,6 +1,6 @@
 import { ITodo } from "./iTodo"
 
-export type iTodoGroup = {
+export type ITodoGroup = {
   id: string
   name: string
   sequence: number

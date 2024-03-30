@@ -1,6 +1,6 @@
 import { IUseTODOList } from "@/types/hooks/iUseTODOList"
 import { ITodo } from "@/types/iTodo"
-import { iTodoGroup } from "@/types/iTodoGroup"
+import { ITodoGroup } from "@/types/iTodoGroup"
 import { StoredDataV1 } from "@/types/storedDataV1"
 import localStorageFetcher from "@/swr/localStorageFetcher"
 import versionChecker from "@/swr/versionChecker"
@@ -12,7 +12,7 @@ const key = '/prt/todo'
 export default  function useTODOList (): IUseTODOList {
   const {error, isLoading, mutate, data} = useSWR<StoredDataV1>(
     key,
-    async (key) => {
+    async (key: string) => {
       return versionChecker(await localStorageFetcher(key))
     }
   )
@@ -23,18 +23,18 @@ export default  function useTODOList (): IUseTODOList {
     mutate(newData)
   }, [mutate])
 
-  const groupList = useCallback((newData: StoredDataV1) => {
+  const groupList = useCallback((newData?: StoredDataV1) => {
     if (newData == null) {
       return []
     }
-    const list: iTodoGroup[] =  Object.values(newData.groups).sort((a, b) => a.sequence - b.sequence)
+    const list: ITodoGroup[] =  Object.values(newData.groups).sort((a, b) => a.sequence - b.sequence)
     return list
   }, [])
   
   return {
     error,
     isLoading,
-    data: data || null,
+    data,
     update,
     groupList,
   }

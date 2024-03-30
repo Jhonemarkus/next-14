@@ -1,10 +1,9 @@
-import { iTodoGroup } from "@/types/iTodoGroup"
-import { VersionedData } from "@/app/prt/types/versionedDataType"
+import { ITodoGroup } from "@/types/iTodoGroup"
 import convert0to1 from "./convert0to1"
 import { StoredDataV1 } from "@/types/storedDataV1"
 import { ITodo } from "@/types/iTodo"
 
-export default async function versionChecker(data: any): StoredDataV1 {
+export default async function versionChecker(data: any): Promise<StoredDataV1> {
   console.debug("Checking data version.")
   if (data == null) {
     console.debug("Empty data, creating default value.")

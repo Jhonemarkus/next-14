@@ -5,20 +5,21 @@ import useTODOList from "@/hooks/useTODOList"
 import { useRouter } from "next/navigation"
 import { useMemo } from "react"
 import { useFormState } from "react-dom"
-import { ITodo } from "../../../types/iTodo"
-import { iTodoGroup } from "@/types/iTodoGroup"
+import { ITodo } from "@/types/iTodo"
+import { ITodoGroup } from "@/types/iTodoGroup"
 import { StoredDataV1 } from "@/types/storedDataV1"
 import reSequenceTodosObject from "@/functions/reSequenceTodosObject"
 
 type IEditTODOParams = {
   params: {
-    id: string
+    groupId: string
+    todoId: string
   }
 }
 
 export default function EditTODO({params}: IEditTODOParams) {
   const router = useRouter()
-  const {groupId, todoId} = params
+  const { groupId, todoId } = params
   const {data, isLoading, update, groupList} = useTODOList()
   const todo = useMemo(() => {
     if (data == null) {
@@ -47,12 +48,12 @@ export default function EditTODO({params}: IEditTODOParams) {
         ...data.groups
       }
     }
-    const oldGroup = data.groups[groupId]
-    const newGroup = data.groups[todo.groupId]
+    const oldGroup: ITodoGroup = data.groups[groupId]
+    const newGroup: ITodoGroup = data.groups[todo.groupId as string]
 
     if (groupId != todo.groupId) {
       // Remove from old group
-      const oldSequence = data.groups[groupId].todos[todoId].sequence
+      const oldSequence = data.groups[groupId].todos[todoId].sequence as number
       // delete oldGroup.todos[todoId]
       oldGroup.todos = reSequenceTodosObject(oldGroup.todos, oldSequence)
       newData.groups[groupId] = oldGroup

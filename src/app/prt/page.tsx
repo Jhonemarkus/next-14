@@ -4,7 +4,7 @@ import Button from "@/components/button"
 import useTODOList from "@/hooks/useTODOList"
 import { useRouter } from "next/navigation"
 import { ITodo } from "../../types/iTodo"
-import { iTodoGroup } from "../../types/iTodoGroup"
+import { ITodoGroup } from "../../types/iTodoGroup"
 import { verify } from "crypto"
 import { StoredDataV1 } from "../../types/storedDataV1"
 import { convertObj2SortedArray } from "@/functions/convertObj2SortedArray"
@@ -16,8 +16,11 @@ export default function PRTIndex() {
   const router = useRouter()
 
   const complete = useCallback((todo: ITodo) => {
-    const group: iTodoGroup = data?.groups[todo.groupId]
-    group.todos = Object.values(group.todos).reduce((agg, el) => {
+    if (data == null) {
+      return
+    }
+    const group: ITodoGroup = data.groups[todo.groupId]
+    group.todos = Object.values(group.todos).reduce<{[todoId: string]: ITodo}>((agg, el) => {
       if (el.id !== todo.id) {
         if (el.sequence > todo.sequence) {
           el.sequence -= 1
@@ -37,8 +40,11 @@ export default function PRTIndex() {
   },[update, data])
 
   const moveDown = useCallback((todo: ITodo) => {
-    const group = data?.groups[todo.groupId]
-    const todoList = Object.values(group?.todos).map((el) => {
+    if (data == null) {
+      return
+    }
+    const group = data.groups[todo.groupId]
+    const todoList = Object.values(group.todos).map((el) => {
       let sequence = el.sequence
       if (el.sequence == todo.sequence) {
         sequence = Object.keys(group.todos).length - 1
@@ -50,7 +56,7 @@ export default function PRTIndex() {
         sequence
       }
     })
-    group.todos = todoList.reduce((agg, el) => {
+    group.todos = todoList.reduce<{[todoId: string]: ITodo}>((agg, el) => {
       agg[el.id] = el
       return agg
     }, {})
@@ -106,13 +112,13 @@ export default function PRTIndex() {
 
   return (
     <>
-      {groupList(data).map((group: iTodoGroup) => (
+      {groupList(data).map((group: ITodoGroup) => (
         <div key={`group-${group.id}`}>
           <Link href={`/prt/${group.id}`}>
             <div>Group: {group.name}</div>
           </Link>
           <div>
-            {renderTodoList(convertObj2SortedArray(group.todos))}
+            {renderTodoList(convertObj2SortedArray<ITodo>(group.todos))}
           </div>
         </div>
       ))}

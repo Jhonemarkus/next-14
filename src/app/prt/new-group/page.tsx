@@ -2,7 +2,7 @@
 
 import GroupForm from "@/components/groupForm";
 import useTODOList from "@/hooks/useTODOList";
-import { iTodoGroup } from "@/types/iTodoGroup";
+import { ITodoGroup } from "@/types/iTodoGroup";
 import { StoredDataV1 } from "@/types/storedDataV1";
 import { useRouter } from "next/navigation";
 import { version } from "os";
@@ -12,10 +12,13 @@ export default function NewGroupPage() {
   const router = useRouter()
   const {data, isLoading, update} = useTODOList()
   const [formState, formAction] = useFormState(async (prevState: any, formData: FormData) => {
-    const group:iTodoGroup = {
+    if (data == null) {
+      return
+    }
+    const group:ITodoGroup = {
       id: `${new Date().getTime()}`,
       name: `${formData.get('name')}`,
-      sequence: Object.keys(data?.groups).length,
+      sequence: Object.keys(data.groups).length,
       todos: {}
     }
     const newData:StoredDataV1 = {
