@@ -54,7 +54,7 @@ export default function TODOForm({ action, groupList, todo }: ITODOFormProps) {
 
         <label htmlFor="description">Description</label>
         <textarea
-          rows={3}
+          rows={8}
           id="description"
           name="description"
           className="text-black mb-2 border-2 rounded-lg px-2"
