@@ -23,6 +23,8 @@ export default function GroupForm({ action, group }: iGroupFormProps) {
           autoFocus
         />
 
+        <input type="hidden" name="id" id="id" value={group?.id} />
+
         <Button type="submit" aria-disabled={pending}>
           {group == null ? 'Add' : 'Edit'}
         </Button>

@@ -9,6 +9,7 @@ import { verify } from "crypto"
 import { StoredDataV1 } from "../../types/storedDataV1"
 import { convertObj2SortedArray } from "@/functions/convertObj2SortedArray"
 import { useCallback } from "react"
+import Link from "next/link"
 
 export default function PRTIndex() {
   const { data, error, isLoading, update, groupList } = useTODOList()
@@ -107,7 +108,9 @@ export default function PRTIndex() {
     <>
       {groupList(data).map((group: iTodoGroup) => (
         <div key={`group-${group.id}`}>
-          <div>Group: {group.name}</div>
+          <Link href={`/prt/${group.id}`}>
+            <div>Group: {group.name}</div>
+          </Link>
           <div>
             {renderTodoList(convertObj2SortedArray(group.todos))}
           </div>
