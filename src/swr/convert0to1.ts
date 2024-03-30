@@ -23,6 +23,6 @@ export default function convert0to1(oldData: ITodo[]): StoredDataV1 {
       }
     }
   }
-  console.info("Convertion completed", newData)
+  console.debug("Convertion completed", newData)
   return newData
 }

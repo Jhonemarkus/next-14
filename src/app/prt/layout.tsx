@@ -16,7 +16,7 @@ export default function PRTLayout({
           </li>
           <li>
             <Link href={"/prt/new-group"}>
-              New Groups
+              New Group
             </Link>
           </li>
           <li>

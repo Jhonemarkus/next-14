@@ -105,7 +105,6 @@ export default function PRTIndex() {
 
   return (
     <>
-      <h1>Groups</h1>
       {groupList(data).map((group: iTodoGroup) => (
         <div key={`group-${group.id}`}>
           <div>Group: {group.name}</div>

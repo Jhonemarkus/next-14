@@ -8,6 +8,7 @@ import { useFormState } from "react-dom"
 import { ITodo } from "../../../types/iTodo"
 import { iTodoGroup } from "@/types/iTodoGroup"
 import { StoredDataV1 } from "@/types/storedDataV1"
+import reSequenceTodosObject from "@/functions/reSequenceTodosObject"
 
 type IEditTODOParams = {
   params: {
@@ -29,6 +30,10 @@ export default function EditTODO({params}: IEditTODOParams) {
   }, [data, groupId, todoId])
   
   const [formState, formAction] = useFormState(async (prevState: any, formData: FormData) => {
+    if (data == null) {
+      throw new Error('data not available')
+    }
+    // re-create todo
     const todo: ITodo = {
       id: `${todoId}`,
       title: `${formData.get('title')}`,
@@ -36,18 +41,30 @@ export default function EditTODO({params}: IEditTODOParams) {
       groupId: `${formData.get('groupId')}`,
       sequence: parseInt(`${formData.get('sequence')}`)
     }
-    const group:iTodoGroup = data?.groups[todo.groupId]
-    group.todos = {
-      ...group.todos,
-      [todo.id]: todo
-    }
     const newData: StoredDataV1 = {
       version: data?.version,
       groups: {
-        ...data.groups,
-        [groupId]: group
+        ...data.groups
       }
     }
+    const oldGroup = data.groups[groupId]
+    const newGroup = data.groups[todo.groupId]
+
+    if (groupId != todo.groupId) {
+      // Remove from old group
+      const oldSequence = data.groups[groupId].todos[todoId].sequence
+      // delete oldGroup.todos[todoId]
+      oldGroup.todos = reSequenceTodosObject(oldGroup.todos, oldSequence)
+      newData.groups[groupId] = oldGroup
+      // Set new sequence
+      todo.sequence = Object.keys(newGroup.todos).length
+    }
+
+    newGroup.todos = {
+      ...newGroup.todos,
+      [todo.id]: todo
+    }
+    newData.groups[newGroup.id] = newGroup
     update(newData)
     router.push('/prt')
   }, { todo })
