@@ -3,5 +3,6 @@ export default async function localStorageFetcher(key: string) {
     return null
   }
   const data = JSON.parse(window.localStorage.getItem(key) ?? 'null')
+  console.debug('Local Storage data:', data)
   return data
 }

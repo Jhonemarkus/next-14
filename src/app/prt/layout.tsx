@@ -15,6 +15,11 @@ export default function PRTLayout({
             </Link>
           </li>
           <li>
+            <Link href={"/prt/new-group"}>
+              New Group
+            </Link>
+          </li>
+          <li>
             <Link href={"/prt/new-todo"}>
               New TODO
             </Link>
