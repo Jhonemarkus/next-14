@@ -1,7 +1,7 @@
 import { ReactNode, Suspense } from "react";
 import SuspenseLoading from "./loading";
 
-export default async function SuspensePage():ReactNode {
+export default async function SuspensePage(): Promise<ReactNode> {
   await new Promise((res) => setTimeout(() => res(), 1000))
   return (
     <div>
@@ -42,7 +42,7 @@ export default async function SuspensePage():ReactNode {
   )
 }
 
-async function DelayedComponent({delay = 1000}: {delay: number}):ReactNode {
+async function DelayedComponent({delay = 1000}: {delay: number}): Promise<ReactNode> {
   await new Promise((res) => setTimeout(() => res(), delay))
   return (
     <div>
