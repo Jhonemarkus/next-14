@@ -6,14 +6,22 @@ import localStorageFetcher from "@/swr/localStorageFetcher"
 import versionChecker from "@/swr/versionChecker"
 import { useCallback } from "react"
 import useSWR from "swr"
+import { trace } from "@opentelemetry/api"
 
 const key = '/prt/todo'
 
 export default  function useTODOList (): IUseTODOList {
+  const tracer = trace.getTracer("PRT")
   const {error, isLoading, mutate, data} = useSWR<StoredDataV1>(
     key,
     async (key: string) => {
-      return versionChecker(await localStorageFetcher(key))
+      return tracer.startActiveSpan("useTODOList.loadData", async (span) => {
+        try {
+          return versionChecker(await localStorageFetcher(key))
+        } finally {
+          span.end()
+        }
+      })
     }
   )
   

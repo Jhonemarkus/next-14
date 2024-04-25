@@ -1,3 +1,4 @@
+import setupTracer from '@/functions/tracerSetup'
 import Link from 'next/link'
 
 export default function Home() {
