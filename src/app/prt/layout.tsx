@@ -7,7 +7,7 @@ export default function PRTLayout({
 }) {
   return (
     <div className="flex flex-row m-8">
-      <div className="p-2">
+      <div className="p-2 w-60">
         <ul>
           <li>
             <Link href={"/prt"}>
@@ -26,7 +26,7 @@ export default function PRTLayout({
           </li>
         </ul>
       </div>
-      <div className="p-2 grow">
+      <div className="p-2">
         {children}
       </div>
     </div>
