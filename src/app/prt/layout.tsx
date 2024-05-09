@@ -1,3 +1,4 @@
+import Backup from "@/components/backup"
 import Link from "next/link"
 
 export default function PRTLayout({
@@ -25,6 +26,9 @@ export default function PRTLayout({
             </Link>
           </li>
         </ul>
+        <div className="m-b-0">
+          <Backup />
+        </div>
       </div>
       <div className="p-2">
         {children}
