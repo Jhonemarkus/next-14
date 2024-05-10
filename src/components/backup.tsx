@@ -1,59 +1,42 @@
 'use client'
 
 import { GAPI_CONFIG } from "@/functions/contants";
-import useGDrive from "@/hooks/useGDrive";
-import useTODOList from "@/hooks/useTODOList"
+import usePrivateTodoList from "@/hooks/usePrivateTodoList"
 import Script from "next/script";
 import { useCallback, useEffect, useState } from "react";
+import { useGDrive, useUserPreferences } from "./prtProvider";
+import { BackupType } from "@/hooks/usePrivateUserPreferences";
 
 const Backup = () => {
-  const { isLoading: todoListLoading, data} = useTODOList()
-  const [isLoadingGAPI, setIsLoadingGAPI] = useState<boolean>(true)
-  const [isLoadingGis, setIsLoadingGis] = useState<boolean>(true)
-  // Callbacks for script load
-  const onLoadGAPI = useCallback(() => {
-    if (!gapi) {
-      return
-    }
-    gapi.load('client', async() => {
-      await gapi.client.init({
-        apiKey: GAPI_CONFIG.API_KEY,
-        discoveryDocs: [GAPI_CONFIG.DISCOVERY_DOC]
-      })
-      setIsLoadingGAPI(false)
-    })
-  }, [])
-  const onLoadGis = useCallback(() => {
-    if (!google?.accounts) {
-      return
-    }
-    const tokenClient = google.accounts.oauth2.initTokenClient({
-      client_id: GAPI_CONFIG.CLIENT_ID,
-      scope: GAPI_CONFIG.SCOPES,
-      callback: ''
-    })
-    setIsLoadingGis(false)
-  },[])
-  
-  // "On-mount" calling load functions for hot-reload
-  useEffect(() => {
-    onLoadGAPI()
-    onLoadGis()
-  })
+  const { onLoadGAPI, onLoadGis } = useGDrive()
+  const { isLoading: loadingUserPreferences, userPreferences } = useUserPreferences()
 
+  // TODO: Check if user already have backup set
+  if (loadingUserPreferences) {
+    return <div>Loading...</div>
+  }
+  // TODO: Ask if user wants to enable backups
+  if (userPreferences.backup === BackupType.NONE) {
+    return <div>☁️ Backup disabled</div>
+  }
+  // TODO: check if already authorized
+  // TODO: authorize user
+  // TODO: list files
+  // TODO: change scope to appdata
+  // TODO: check if data exist in GDrive
+  // TODO: compare which one is newer (both must have backup enabled)
+  // TODO: If GDrive data newer ask user what to do
+  // TODO: If Gdrive data is older update GDrive
+  // TODO: listen to todoList updates and update GDrive
   
   return (
     <div>
-      <Script strategy="lazyOnload" src="https://apis.google.com/js/api.js" onLoad={onLoadGAPI} />
-      <Script strategy="lazyOnload" src="https://accounts.google.com/gsi/client" onLoad={onLoadGis} />
-      {(!isLoadingGAPI && !isLoadingGis) && (
-        <button>Authorize</button>
-      )}
-      Checking backup...
-      <pre>{JSON.stringify({
-        isLoadingGAPI,
-        isLoadingGis
-      }, null, 2)}</pre>
+      {/* <Script strategy="lazyOnload" src="https://apis.google.com/js/api.js" onLoad={onLoadGAPI} />
+      <Script strategy="lazyOnload" src="https://accounts.google.com/gsi/client" onLoad={onLoadGis} /> */}
+      Backup
+      <pre>
+        {JSON.stringify(userPrefernces, null, 2)}
+      </pre>
     </div>
   )
 }

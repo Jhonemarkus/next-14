@@ -1,16 +1,17 @@
 'use client'
 
 import GroupForm from "@/components/groupForm";
-import useTODOList from "@/hooks/useTODOList";
+import { iPRTContext, PRTContext } from "@/components/prtProvider";
 import { ITodoGroup } from "@/types/iTodoGroup";
 import { StoredDataV1 } from "@/types/storedDataV1";
 import { useRouter } from "next/navigation";
 import { version } from "os";
+import { useContext } from "react";
 import { useFormState } from "react-dom";
 
 export default function NewGroupPage() {
   const router = useRouter()
-  const {data, isLoading, update} = useTODOList()
+  const {data, isLoading, update} = useContext<iPRTContext>(PRTContext)?.useTODOList
   const [formState, formAction] = useFormState(async (prevState: any, formData: FormData) => {
     if (data == null) {
       return

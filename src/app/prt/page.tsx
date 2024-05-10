@@ -1,18 +1,18 @@
 "use client"
 
 import Button from "@/components/button"
-import useTODOList from "@/hooks/useTODOList"
 import { useRouter } from "next/navigation"
 import { ITodo } from "../../types/iTodo"
 import { ITodoGroup } from "../../types/iTodoGroup"
 import { verify } from "crypto"
 import { StoredDataV1 } from "../../types/storedDataV1"
 import { convertObj2SortedArray } from "@/functions/convertObj2SortedArray"
-import { useCallback } from "react"
+import { useCallback, useContext } from "react"
 import Link from "next/link"
+import { iPRTContext, PRTContext } from "@/components/prtProvider"
 
 export default function PRTIndex() {
-  const { data, error, isLoading, update, groupList } = useTODOList()
+  const { data, error, isLoading, update, groupList } = useContext<iPRTContext>(PRTContext)?.useTODOList
   const router = useRouter()
 
   const complete = useCallback((todo: ITodo) => {

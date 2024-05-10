@@ -1,14 +1,14 @@
 "use client"
 
 import TODOForm from "@/components/todoForm"
-import useTODOList from "@/hooks/useTODOList"
 import { useRouter } from "next/navigation"
-import { useMemo } from "react"
+import { useContext, useMemo } from "react"
 import { useFormState } from "react-dom"
 import { ITodo } from "@/types/iTodo"
 import { ITodoGroup } from "@/types/iTodoGroup"
 import { StoredDataV1 } from "@/types/storedDataV1"
 import reSequenceTodosObject from "@/functions/reSequenceTodosObject"
+import { iPRTContext, PRTContext } from "@/components/prtProvider"
 
 type IEditTODOParams = {
   params: {
@@ -20,7 +20,7 @@ type IEditTODOParams = {
 export default function EditTODO({params}: IEditTODOParams) {
   const router = useRouter()
   const { groupId, todoId } = params
-  const {data, isLoading, update, groupList} = useTODOList()
+  const {data, isLoading, update, groupList} = useContext<iPRTContext>(PRTContext)?.useTODOList
   const todo = useMemo(() => {
     if (data == null) {
       return null

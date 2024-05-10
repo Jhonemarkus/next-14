@@ -3,8 +3,7 @@
 import { revalidatePath } from "next/cache"
 import { redirect } from "next/dist/server/api-utils"
 import { useFormState, useFormStatus } from "react-dom"
-import { useMemo } from "react"
-import useTODOList from "@/hooks/useTODOList"
+import { useContext, useMemo } from "react"
 import { useRouter } from "next/navigation"
 import { randomUUID } from "crypto"
 import TODOForm from "@/components/todoForm"
@@ -12,10 +11,11 @@ import { group } from "console"
 import { ITodoGroup } from "@/types/iTodoGroup"
 import { StoredDataV1 } from "@/types/storedDataV1"
 import { ITodo } from "@/types/iTodo"
+import { iPRTContext, PRTContext } from "@/components/prtProvider"
 
 export default function NewTODO() {
   const router = useRouter()
-  const {isLoading, update, data, groupList } = useTODOList()
+  const {isLoading, update, data, groupList } = useContext<iPRTContext>(PRTContext)?.useTODOList
   const [formState, formAction]  = useFormState(async (prevState: any, formData: FormData) => {
     if (data == null) {
       return

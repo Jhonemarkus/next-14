@@ -2,11 +2,11 @@
 
 import Button from "@/components/button";
 import GroupForm from "@/components/groupForm";
-import useTODOList from "@/hooks/useTODOList";
+import { iPRTContext, PRTContext } from "@/components/prtProvider";
 import { ITodoGroup } from "@/types/iTodoGroup";
 import { StoredDataV1 } from "@/types/storedDataV1";
 import { useRouter } from "next/navigation";
-import { useCallback, useMemo } from "react";
+import { useCallback, useContext, useMemo } from "react";
 import { useFormState } from "react-dom";
 
 type IEditGroupParams = {
@@ -18,7 +18,7 @@ type IEditGroupParams = {
 export default function EditGroupPage({ params }: IEditGroupParams) {
   const { groupId } = params
   const router = useRouter()
-  const {data, isLoading, update} = useTODOList()
+  const {data, isLoading, update} = useContext<iPRTContext>(PRTContext)?.useTODOList
   const group = useMemo(() => {
     return data?.groups[groupId]
   }, [data, groupId])

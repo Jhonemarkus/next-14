@@ -9,7 +9,7 @@ import useSWR from "swr"
 
 const key = '/prt/todo'
 
-export default  function useTODOList (): IUseTODOList {
+export default  function usePrivateTodoList (): IUseTODOList {
   const {error, isLoading, mutate, data} = useSWR<StoredDataV1>(
     key,
     async (key: string) => {
