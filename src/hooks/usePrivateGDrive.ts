@@ -1,3 +1,4 @@
+import { GAPI_CONFIG } from "@/functions/contants"
 import { useCallback, useState } from "react"
 
 export type IUseGDrive = {
@@ -8,6 +9,7 @@ export type IUseGDrive = {
 export const usePrivateGDrive = (): IUseGDrive => {
   const [isLoadingGAPI, setIsLoadingGAPI] = useState<boolean>(true)
   const [isLoadingGis, setIsLoadingGis] = useState<boolean>(true)
+  const [tokenClient, setTokenClient] = useState(null)
   // Callbacks for script load
   const onLoadGAPI = useCallback(() => {
     if (!gapi || !isLoadingGAPI) {
@@ -25,11 +27,11 @@ export const usePrivateGDrive = (): IUseGDrive => {
     if (!google?.accounts || !isLoadingGis) {
       return
     }
-    const tokenClient = google.accounts.oauth2.initTokenClient({
+    setTokenClient(google.accounts.oauth2.initTokenClient({
       client_id: GAPI_CONFIG.CLIENT_ID,
       scope: GAPI_CONFIG.SCOPES,
       callback: ''
-    })
+    }))
     setIsLoadingGis(false)
   },[])
   
@@ -40,6 +42,8 @@ export const usePrivateGDrive = (): IUseGDrive => {
   // })
   return {
     onLoadGAPI,
-    onLoadGis
+    onLoadGis,
+    isLoading: isLoadingGAPI || isLoadingGis,
+    tokenClient
   }
 }
