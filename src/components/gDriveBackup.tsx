@@ -2,6 +2,19 @@ import Script from "next/script"
 import { useGDrive } from "./prtProvider"
 import { useState } from "react"
 
+export const GDRIVE_FILENAME = "marcos-next14_poc"
+
+/**
+ *  Sign out the user upon button click.
+ */
+// function handleSignoutClick() {
+//   const token = gapi.client.getToken();
+//   if (token !== null) {
+//     google.accounts.oauth2.revoke(token.access_token);
+//     gapi.client.setToken('');
+//   }
+// }
+
 export default function GDriveBackup() {
   const [accessTokenReady, setAccessTokenReady] = useState<boolean>(false)
   const { onLoadGAPI, onLoadGis, isLoading, tokenClient } = useGDrive()
@@ -23,17 +36,24 @@ export default function GDriveBackup() {
   if (accessTokenReady) {
     // TODO: list files
     gapi.client.drive.files.list({
+      spaces: 'appDataFolder',
       'pageSize': 10,
       'fields': 'files(id, name)',
     }).then((response) => {
       console.log('response', {response})
+      // TODO: check if data exist in GDrive
+      if (reponse.status === 200) {
+        const { files } = reponse.result
+        const gDriveFile = files.find((file) => file.name === GDRIVE_FILENAME)
+        if ( gDriveFile != null ) {
+          // TODO: compare which one is newer (both must have backup enabled)
+          // TODO: If GDrive data newer ask user what to do
+          // TODO: If Gdrive data is older update GDrive
+        }
+        uploadTodoList2GDrive({text: "sample"})
+      }
+      // TODO: listen to todoList updates and update GDrive
     });
-    // TODO: change scope to appdata
-    // TODO: check if data exist in GDrive
-    // TODO: compare which one is newer (both must have backup enabled)
-    // TODO: If GDrive data newer ask user what to do
-    // TODO: If Gdrive data is older update GDrive
-    // TODO: listen to todoList updates and update GDrive
   }
   return (
     <>
