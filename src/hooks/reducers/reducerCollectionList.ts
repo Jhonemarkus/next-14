@@ -5,7 +5,7 @@ import { CollectionListState } from "@/types/hooks/CollectionListState";
 const LS_KEY = "COLLECTION_LIST"
 
 function saveCollectionList2LocalStorage(state: CollectionListState) {
-  if (window?.localStorage && !Object.is(prevState.collectionList, state.collectionList)) {
+  if (window?.localStorage) {
     window.localStorage.setItem(LS_KEY, JSON.stringify(state.collectionList))
   }
   return state
@@ -17,15 +17,11 @@ export function reducerCollectionList(state: CollectionListState, action: Collec
       return saveCollectionList2LocalStorage({
         collectionList: [
           ...state.collectionList,
-          action.newCollection
+          action.newCollection!
         ]
       })
     default:
       console.warn('Invalid type received', { action })
   }
   return state
-}
-
-function addCollection(state: CollectionListState, action: CollectionListAction): CollectionListState {
-  
 }

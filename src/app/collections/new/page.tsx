@@ -1,17 +1,21 @@
 'use client'
 
-import { createCollection } from "./actions"
 import useCollectionList from "@/hooks/useCollectionList"
+import { Collection } from "@/types/Collection"
 import { CollectionListActionType } from "@/types/hooks/CollectionlistAction"
 import { useCallback, useState } from "react"
 
 export default function NewCollection() {
   const { state: { collectionList }, dispatch } = useCollectionList()
-  const [error, setError] = useState<string>(null)
+  const [error, setError] = useState<string|null>(null)
   const createCollection = (data: FormData) =>{
     console.log('calling dispatch', data)
-    const slug = data.name.replace(/\W+/g, '-').toLowerCase()
-    const existingCol = collectionList.find((col) => col.slug === slug)
+    if (data == null || data.get('name') == null) {
+      setError('Name is required')
+      return
+    }
+    const slug = (data.get('name') as string).replace(/\W+/g, '-').toLowerCase()
+    const existingCol = collectionList.find((col: Collection) => col.slug === slug)
     if (existingCol) {
       setError(`A collection with a similar name already exists "${existingCol.name}"`)
       return
@@ -19,7 +23,7 @@ export default function NewCollection() {
     dispatch({
       type: CollectionListActionType.NEW,
       newCollection: {
-        name: data.get('name'),
+        name: data.get('name') as string,
         slug,
         categories: [{
           name: 'Main',

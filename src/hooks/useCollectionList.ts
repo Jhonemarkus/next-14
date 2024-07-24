@@ -3,7 +3,7 @@ import { reducerCollectionList } from "./reducers/reducerCollectionList"
 import { Collection } from "@/types/Collection"
 import { CollectionListState } from "@/types/hooks/CollectionListState"
 
-export default  function useCollectionList (): IUseTODOList {
+export default  function useCollectionList () {
   const [state, dispatch] = useReducer(reducerCollectionList, {
     collectionList: []
   })
