@@ -1,5 +1,5 @@
 import { Collection } from "@/types/Collection";
-import { CollectionListAction, CollectionListActionType } from "@/types/hooks/CollectionlistAction";
+import { CollectionListAction, CollectionListActionType } from "@/types/hooks/CollectionListAction";
 import { CollectionListState } from "@/types/hooks/CollectionListState";
 import { LocalStorageKeys } from "@/types/LocalStorageKeys";
 

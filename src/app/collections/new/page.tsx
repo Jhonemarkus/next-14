@@ -3,7 +3,7 @@
 import PrimaryButton from "@/components/primaryButton"
 import { CollectionContext } from "@/providers/collectionProvider"
 import { Collection } from "@/types/Collection"
-import { CollectionListActionType } from "@/types/hooks/CollectionlistAction"
+import { CollectionListActionType } from "@/types/hooks/CollectionListAction"
 import { useRouter } from "next/navigation"
 import { useCallback, useContext, useState } from "react"
 
