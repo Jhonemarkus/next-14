@@ -1,18 +1,18 @@
 'use client'
 
 import PrimaryButton from "@/components/primaryButton"
-import useCollectionList from "@/hooks/useCollectionList"
 import { CollectionContext } from "@/providers/collectionProvider"
 import { Collection } from "@/types/Collection"
 import { CollectionListActionType } from "@/types/hooks/CollectionlistAction"
+import { useRouter } from "next/navigation"
 import { useCallback, useContext, useState } from "react"
 
 export default function NewCollection() {
   const { useCollectionList: {state: { collectionList }, dispatch } } = useContext(CollectionContext)
-  // const { state: { collectionList }, dispatch } = useCollectionList()
   const [error, setError] = useState<string|null>(null)
+  const router = useRouter()
   
-  const createCollection = (data: FormData) =>{
+  const createCollection = (data: FormData) => {
     if (data == null || data.get('name') == null) {
       setError('Name is required')
       return
@@ -34,7 +34,7 @@ export default function NewCollection() {
         }]
       }
     })
-    console.log('Saved')
+    router.push('/collections')
   }
   
   return (

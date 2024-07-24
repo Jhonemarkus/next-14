@@ -1,18 +1,22 @@
+'use client'
+
 import { useReducer } from "react"
 import { reducerCollectionList } from "./reducers/reducerCollectionList"
 import { LocalStorageKeys } from "@/types/LocalStorageKeys"
+
+const isBrowser = () => typeof window !== 'undefined';
 
 export default  function useCollectionList () {
   const [state, dispatch] = useReducer(
     reducerCollectionList,
     { collectionList: [] },
     (initialArg) => {
-      if (window?.localStorage) {
+      if (isBrowser()) {
         try {
-          const collectionlist = JSON.parse(window.localStorage.getItem(LocalStorageKeys.LS_KEY))
-          if (collectionlist != null) {
+          const collectionList = JSON.parse(window.localStorage.getItem(LocalStorageKeys.LS_KEY))
+          if (collectionList != null) {
             return {
-              collectionlist
+              collectionList
             }
           }
         } catch (error) {
