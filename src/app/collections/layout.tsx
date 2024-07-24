@@ -1,4 +1,4 @@
-import Link from "next/link"
+import MenuLink from "@/components/menuLink"
 
 export default function CollectionsLayout({
   children,
@@ -9,10 +9,10 @@ export default function CollectionsLayout({
     <div className="p-2">
       <h1>Colelctions</h1>
       <div className="flex flex-row">
-        <div className="w-64" >
-          <Link href="/collections/new">
+        <div className="w-64 mr-2">
+          <MenuLink href="/collections/new">
             New Collection
-          </Link>
+          </MenuLink>
         </div>
         <div className="flex-1">
           {children}
