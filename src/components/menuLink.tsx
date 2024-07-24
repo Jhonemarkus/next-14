@@ -7,7 +7,7 @@ export interface MenuLinkProps extends LinkProps {
 export default function MenuLink({ children, ...props}: MenuLinkProps) {
   return (
     <Link
-      className="bg-slate-200 border-b-2 border-black block w-full p-2"
+      className="bg-slate-200 border-b-2 border-black block w-full p-2 mb-1"
       {...props}
     >
       {children}
