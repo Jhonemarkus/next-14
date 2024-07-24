@@ -11,8 +11,8 @@ export default function NewCollection() {
   const { useCollectionList: {state: { collectionList }, dispatch } } = useContext(CollectionContext)
   // const { state: { collectionList }, dispatch } = useCollectionList()
   const [error, setError] = useState<string|null>(null)
+  
   const createCollection = (data: FormData) =>{
-    console.log('calling dispatch', data)
     if (data == null || data.get('name') == null) {
       setError('Name is required')
       return
@@ -37,7 +37,6 @@ export default function NewCollection() {
     console.log('Saved')
   }
   
-  // console.log("NewCollectionRender", { state })
   return (
     <div>
       <h2>New Collection</h2>

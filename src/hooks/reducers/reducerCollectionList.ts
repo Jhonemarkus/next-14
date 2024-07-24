@@ -1,12 +1,13 @@
 import { Collection } from "@/types/Collection";
 import { CollectionListAction, CollectionListActionType } from "@/types/hooks/CollectionlistAction";
 import { CollectionListState } from "@/types/hooks/CollectionListState";
+import { LocalStorageKeys } from "@/types/LocalStorageKeys";
 
-const LS_KEY = "COLLECTION_LIST"
+
 
 function saveCollectionList2LocalStorage(state: CollectionListState) {
   if (window?.localStorage) {
-    window.localStorage.setItem(LS_KEY, JSON.stringify(state.collectionList))
+    window.localStorage.setItem(LocalStorageKeys.LS_KEY, JSON.stringify(state.collectionList))
   }
   return state
 }
