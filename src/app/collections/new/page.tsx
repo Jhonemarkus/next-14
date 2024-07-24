@@ -1,5 +1,6 @@
 'use client'
 
+import PrimaryButton from "@/components/primaryButton"
 import useCollectionList from "@/hooks/useCollectionList"
 import { Collection } from "@/types/Collection"
 import { CollectionListActionType } from "@/types/hooks/CollectionlistAction"
@@ -44,7 +45,9 @@ export default function NewCollection() {
           <input id="name" name="name" type="text" className="ml-2" required autoFocus />
         </div>
         <div className="mt-2">
-          <button disabled={false} type="submit">Create</button>
+          <PrimaryButton type="submit">
+            Create
+          </PrimaryButton>
         </div>
         {error && (
         <div className="mt-2">
