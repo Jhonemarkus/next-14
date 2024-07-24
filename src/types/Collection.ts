@@ -1,7 +1,7 @@
 import { CollectionCategory } from "./CollectionCategory"
 
 export type Collection = {
-  id: string
+  slug: string
   name: string
   categories: CollectionCategory[]
 }
