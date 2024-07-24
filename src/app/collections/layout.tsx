@@ -10,9 +10,18 @@ export default function CollectionsLayout({
       <h1>Colelctions</h1>
       <div className="flex flex-row">
         <div className="w-64 mr-2">
-          <MenuLink href="/collections/new">
-            New Collection
-          </MenuLink>
+          <ul>
+            <li>
+              <MenuLink href="/collections">
+                List Collections
+              </MenuLink>
+            </li>
+            <li>
+              <MenuLink href="/collections/new">
+                New Collection
+              </MenuLink>
+            </li>
+          </ul>
         </div>
         <div className="flex-1">
           {children}
