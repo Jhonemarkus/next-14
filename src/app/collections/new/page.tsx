@@ -2,12 +2,14 @@
 
 import PrimaryButton from "@/components/primaryButton"
 import useCollectionList from "@/hooks/useCollectionList"
+import { CollectionContext } from "@/providers/collectionProvider"
 import { Collection } from "@/types/Collection"
 import { CollectionListActionType } from "@/types/hooks/CollectionlistAction"
-import { useCallback, useState } from "react"
+import { useCallback, useContext, useState } from "react"
 
 export default function NewCollection() {
-  const { state: { collectionList }, dispatch } = useCollectionList()
+  const { useCollectionList: {state: { collectionList }, dispatch } } = useContext(CollectionContext)
+  // const { state: { collectionList }, dispatch } = useCollectionList()
   const [error, setError] = useState<string|null>(null)
   const createCollection = (data: FormData) =>{
     console.log('calling dispatch', data)
