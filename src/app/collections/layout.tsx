@@ -1,4 +1,5 @@
 import MenuLink from "@/components/menuLink"
+import CollectionProvider from "../../providers/collectionProvider"
 
 export default function CollectionsLayout({
   children,
@@ -24,7 +25,9 @@ export default function CollectionsLayout({
           </ul>
         </div>
         <div className="flex-1">
-          {children}
+          <CollectionProvider>
+            {children}
+          </CollectionProvider>
         </div>
       </div>
     </div>
