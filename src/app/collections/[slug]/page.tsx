@@ -1,42 +1,43 @@
 'use client'
 
+import AddCollectionCategory from "@/components/addCollectionCategory"
 import PrimaryButton from "@/components/primaryButton"
 import Toggle from "@/components/toggle"
 import { CollectionContext } from "@/providers/collectionProvider"
 import { Collection } from "@/types/Collection"
 import { CollectionCategory } from "@/types/CollectionCategory"
 import { CollectionItem } from "@/types/CollectionItem"
-import { CollectionListActionType } from "@/types/hooks/CollectionListAction2"
+import { CollectionListAction, CollectionListActionType } from "@/types/hooks/CollectionListAction2"
 import { useRouter } from "next/navigation"
-import { useContext, useMemo, useState } from "react"
-
-export default function EditCollection({ params: { slug }}: { params: { slug: string } }) {
-  const { useCollectionList: {state: { collectionList }, dispatch } } = useContext(CollectionContext)
-  const collection = useMemo(() => collectionList.find((col) => col.slug === slug), [collectionList, slug])
-  if (!collection) {
-    return null
-  }
-  return (
-    <div>
-      <h2>{collection.name}</h2>
-      {/* Tabs */}
-      <CategoryTabs categories={collection?.categories} />
-      
-    </div>
-  )
-}
+import { useCallback, useContext, useMemo, useState } from "react"
 
 const tabClasses = "inline-block mr-1 p-4 text-gray-500 rounded-t-lg hover:bg-slate-100 cursor-pointer"
 const activeTabClasses = "inline-block mr-1 p-4 text-black rounded-t-lg bg-slate-200 border-b-2 border-black cursor-pointer"
 
-function CategoryTabs ({categories}: {categories: CollectionCategory[]}) {
+export default function EditCollection({ params: { slug }}: { params: { slug: string } }) {
+  const { useCollectionList: {state: { collectionList }, dispatch } } = useContext(CollectionContext)
   const [openTab, setOpenTab] = useState<number>(0)
+  
+  const collection = useMemo(() => collectionList.find((col) => col.slug === slug), [collectionList, slug])
+  
+  const addCategory = useCallback((name: string) => {
+    dispatch({
+      type: CollectionListActionType.ADD_CATEGORY,
+      slug: collection.slug,
+      categoryName: name
+    } as CollectionListAction)
+  }, [collection, dispatch])
 
+  if (!collection) {
+    return null
+  }
+  
   return (
     <div>
+      <h2>{collection.name}</h2>
       <div className="border-b border-gray-500">
         <ul className="flex flex-wrap">
-          {categories.map((category, index) => (
+          {(collection?.categories ?? []).map((category, index) => (
             <li
               key={`categoryTab-${category.name}`}
               className={index === openTab ? activeTabClasses: tabClasses}
@@ -45,9 +46,12 @@ function CategoryTabs ({categories}: {categories: CollectionCategory[]}) {
               {category.name}
             </li>
           ))}
+          <li className={tabClasses}>
+            <AddCollectionCategory onSave={addCategory} />
+          </li>
         </ul>
       </div>
-      <ItemList items={categories[openTab].itemList} />
+      <ItemList items={collection?.categories[openTab]?.itemList} />
     </div>
   )
 }
