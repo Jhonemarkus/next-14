@@ -21,6 +21,23 @@ export function reducerCollectionList(state: CollectionListState, action: Collec
           action.newCollection!
         ]
       })
+    case CollectionListActionType.ADD_CATEGORY:
+      const index = state.collectionList.findIndex((col) => col.slug === action.slug)
+      if (index == -1) {
+        break
+      }
+      const collection = state.collectionList[index]
+      collection.categories.push({
+        name: action.categoryName,
+        itemList: []
+      })
+      return saveCollectionList2LocalStorage({
+        ...state,
+        collectionList: [
+          collection,
+          ...state.collectionList.splice(index, 1)
+        ]
+      })
     default:
       console.warn('Invalid type received', { action })
   }
