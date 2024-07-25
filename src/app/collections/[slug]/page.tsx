@@ -10,7 +10,7 @@ import { CollectionListActionType } from "@/types/hooks/CollectionListAction2"
 import { useRouter } from "next/navigation"
 import { useContext, useMemo, useState } from "react"
 
-export default function EditCollection({ params: { slug }}) {
+export default function EditCollection({ params: { slug }}: { params: { slug: string } }) {
   const { useCollectionList: {state: { collectionList }, dispatch } } = useContext(CollectionContext)
   const collection = useMemo(() => collectionList.find((col) => col.slug === slug), [collectionList, slug])
   if (!collection) {
