@@ -23,7 +23,7 @@ export default function EditCollection({ params: { slug }}: { params: { slug: st
   const addCategory = useCallback((name: string) => {
     dispatch({
       type: CollectionListActionType.ADD_CATEGORY,
-      slug: collection.slug,
+      slug: collection?.slug,
       categoryName: name
     } as CollectionListAction)
   }, [collection, dispatch])

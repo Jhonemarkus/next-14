@@ -1,9 +1,9 @@
-import { useState } from "react"
+import { KeyboardEventHandler, useState } from "react"
 
 export default function AddCollectionCategory ({ onSave }: { onSave: Function}) {
   const [editing, setEditing] = useState<boolean>(false)
   
-  const hanldeKeyDown = (e) => {
+  const hanldeKeyDown = (e: any) => {
     if (e.keyCode === 13) {
       if (onSave) {
         onSave(e.target.value)
