@@ -1,13 +1,16 @@
 'use client'
 
 import AddCollectionCategory from "@/components/addCollectionCategory"
+import Input from "@/components/input"
 import PrimaryButton from "@/components/primaryButton"
+import SecondaryButton from "@/components/secondaryButton"
 import Toggle from "@/components/toggle"
 import { CollectionContext } from "@/providers/collectionProvider"
 import { Collection } from "@/types/Collection"
 import { CollectionCategory } from "@/types/CollectionCategory"
 import { CollectionItem } from "@/types/CollectionItem"
 import { CollectionListAction, CollectionListActionType } from "@/types/hooks/CollectionListAction2"
+import { CollectionContextValue } from "@/types/props/CollectionContextValue"
 import { useRouter } from "next/navigation"
 import { useCallback, useContext, useMemo, useState } from "react"
 
@@ -51,23 +54,71 @@ export default function EditCollection({ params: { slug }}: { params: { slug: st
           </li>
         </ul>
       </div>
-      <ItemList items={collection?.categories[openTab]?.itemList} />
+      <ItemList items={collection?.categories[openTab]?.itemList} collection={collection} categoryIndex={openTab} />
     </div>
   )
 }
 
-function ItemList ({ items }: {items: CollectionItem[]}) {
+function ItemList ({ items, collection, categoryIndex }: {items: CollectionItem[], collection: Collection, categoryIndex: number}) {
+  
   return (
     <div>
       {items.map((item) => (
         <div key={`item-${item.name}`} className="border-b p-2 hover:bg-slate-50 flex flex-direction-row space-x-2">
-          <div className="font-bold">{item.name}</div>
-          <div>
+          <div className="font-bold w-40">{item.name}</div>
+          <div className="w-32">
             <Toggle disabled value={item.owned} />
           </div>
-          <div>{item.notes}</div>
+          <div className="flex-grow">{item.notes}</div>
         </div>
       ))}
+      <NewItem collection={collection} categoryIndex={categoryIndex} />
     </div>
+  )
+}
+
+function NewItem({ collection, categoryIndex}: {collection: Collection, categoryIndex: number}) {
+  const { useCollectionList: { dispatch } } = useContext(CollectionContext)
+  const [editing, setEditing] = useState<boolean>(false)
+  const handleSubmit = (e) => {
+    console.log('handling submit')
+    e.preventDefault()
+    const formData = new FormData(e.target)
+    dispatch({
+      type: CollectionListActionType.NEW_ITEM,
+      item: {
+        name: formData.get('name') as string,
+        notes: formData.get('notes') as string,
+        owned: formData.get('owned') != null
+      },
+      slug: collection.slug,
+      categoryIndex
+    })
+    e.target.reset()
+    document.getElementById('name')?.focus()
+  }
+  if (!editing) {
+    return (
+      <div>
+        <PrimaryButton size="sm" onClick={() => setEditing(true) }>+ New</PrimaryButton>
+      </div>
+    )
+  }
+  return (
+    <form onSubmit={handleSubmit}>
+      <div className="p-2 flex flex-direction-row space-x-2">
+        <div className="w-40">
+          <Input id="name" placeholder="name" name="name" autoFocus />
+        </div>
+        <div className="w-32">
+          <Toggle name="owned" />
+        </div>
+        <div className="flex-grow flex flex-direction-row space-x-2">
+          <Input placeholder="notes" name="notes" />
+          <PrimaryButton type="submit" size="xs">OK</PrimaryButton>
+          <SecondaryButton size="xs" onClick={() => {setEditing(false)}}>X</SecondaryButton>
+        </div>
+      </div>
+    </form>
   )
 }
