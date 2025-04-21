@@ -1,3 +1,5 @@
+'use client'
+
 import { KeyboardEventHandler, useState } from "react"
 
 export default function AddCollectionCategory ({ onSave }: { onSave: Function}) {
@@ -6,8 +8,8 @@ export default function AddCollectionCategory ({ onSave }: { onSave: Function}) 
   const hanldeKeyDown = (e: any) => {
     if (e.keyCode === 13) {
       if (onSave) {
-        onSave(e.target.value)
         setEditing(false)
+        onSave(e.target.value)
       }
     } else if (e.keyCode === 27) {
       setEditing(false)

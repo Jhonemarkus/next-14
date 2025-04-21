@@ -23,13 +23,14 @@ export default function EditCollection({ params: { slug }}: { params: { slug: st
   
   const collection = useMemo(() => collectionList.find((col) => col.slug === slug), [collectionList, slug])
   
-  const addCategory = useCallback((name: string) => {
+  const addCategory = (name: string) => {
+    console.log('enter pressed')
     dispatch({
       type: CollectionListActionType.ADD_CATEGORY,
       slug: collection?.slug,
       categoryName: name
     } as CollectionListAction)
-  }, [collection, dispatch])
+  }
 
   if (!collection) {
     return null
